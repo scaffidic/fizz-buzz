@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.EnumSet;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -50,13 +50,21 @@ class AnalysisTest {
   @ParameterizedTest
   @ValueSource(ints = {-1, -3, -5, -15})
   void analyze_negative (int value) {
-    try {
-      analysis.analyze(value);
-      // if code reaches this line, the test failed. Means a negative number went through
-      fail();
-    } catch (IllegalArgumentException e) {
-      // Do nothing; this is expected the behavior.
-    }
+   assertThrows(IllegalArgumentException.class, new InvalidInvocation(value));
   }
 
+  private class InvalidInvocation implements Executable {
+
+//    private final Analysis analysis;
+    private final int value;
+
+    public InvalidInvocation(int value) {
+      this.value = value;
+    }
+
+    @Override
+    public void execute() throws Throwable {
+      analysis.analyze(value);
+    }
+  }
 }
