@@ -12,12 +12,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class AnalysisTest {
 
-  private Analysis analysis;
+//  private Analysis analysis;
 
-  @BeforeEach
-  void setUp() {
-    analysis = new Analysis();
-  }
+  final Analysis analysis = new Analysis();
+
+//  @BeforeEach
+//  void setUp() {
+//    analysis = new Analysis();
+//  }
 
   @ParameterizedTest
   @ValueSource(ints = {3, 21, 999_999_999})
@@ -34,7 +36,7 @@ class AnalysisTest {
   }
 
   @ParameterizedTest
-  @ValueSource(ints = {5, 20, 999_999_995, })
+  @ValueSource(ints = {5, 20, 999_999_995,})
   void analyze_buzz(int value) {
     Set<State> expected = EnumSet.of(State.BUZZ);
     assertEquals(expected, analysis.analyze(value));
@@ -49,14 +51,14 @@ class AnalysisTest {
 
   @ParameterizedTest
   @ValueSource(ints = {-1, -3, -5, -15})
-  void analyze_negative (int value) {
-   assertThrows(IllegalArgumentException.class, new InvalidInvocation(value));
+  void analyze_negative(int value) {
+    assertThrows(IllegalArgumentException.class, new InvalidInvocation(value));
   }
 
-  private class InvalidInvocation implements Executable {
+  class InvalidInvocation implements Executable {
 
-//    private final Analysis analysis;
     private final int value;
+
 
     public InvalidInvocation(int value) {
       this.value = value;
